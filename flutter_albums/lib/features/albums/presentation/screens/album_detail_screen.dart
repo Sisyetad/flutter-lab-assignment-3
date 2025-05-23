@@ -6,27 +6,41 @@ import 'package:flutter_albums/features/albums/presentation/bloc/album_bloc.dart
 import 'package:flutter_albums/features/albums/presentation/bloc/album_event.dart';
 import 'package:flutter_albums/features/albums/presentation/bloc/album_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class AlbumDetailScreen extends StatelessWidget {
+class AlbumDetailScreen extends StatefulWidget {
   final int albumId;
 
   const AlbumDetailScreen({super.key, required this.albumId});
 
   @override
-  Widget build(BuildContext context) {
-    // Trigger album detail loading on screen build
-    context.read<AlbumBloc>().add(LoadAlbumDetailsEvent(albumId));
+  State<AlbumDetailScreen> createState() => _AlbumDetailScreenState();
+}
 
+class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AlbumBloc>().add(LoadAlbumDetailsEvent(widget.albumId));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
         elevation: 4,
         title: Text(
-          "Album $albumId Details",
+          "Album ${widget.albumId} Details",
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
       ),
+
       body: BlocBuilder<AlbumBloc, AlbumState>(
         builder: (context, state) {
           if (state is AlbumLoading) {
@@ -84,7 +98,7 @@ class AlbumDetailScreen extends StatelessWidget {
               message: state.message,
               onRetry:
                   () => context.read<AlbumBloc>().add(
-                    LoadAlbumDetailsEvent(albumId),
+                    LoadAlbumDetailsEvent(widget.albumId),
                   ),
             );
           }

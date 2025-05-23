@@ -1,32 +1,22 @@
-
-
-import 'package:flutter_albums/core/network/api_service.dart';
-import 'package:flutter_albums/features/albums/data/models/album_model.dart';
-import 'package:flutter_albums/features/albums/data/models/photo_model.dart';
+import 'package:flutter_albums/features/albums/data/source/album_data_src.dart';
+import 'package:flutter_albums/features/albums/domain/entities/album_entity.dart';
+import 'package:flutter_albums/features/albums/domain/entities/photo_entity.dart';
 
 class AlbumRepository {
-  final ApiService apiService;
+  final AlbumDataSrc albumDataSrc;
 
-  AlbumRepository({required this.apiService});
+  AlbumRepository({required this.albumDataSrc});
 
-  Future<List<AlbumModel>> fetchAlbums() async {
-    try {
-      return await apiService.getAlbums();
-    } catch (e) {
-      throw Exception('Failed to fetch albums: $e');
-    }
+  Future<List<AlbumEntity>> fetchAlbums() async {
+    return await albumDataSrc.getAllAlbums();
   }
 
-  Future<List<PhotoModel>> fetchPhotos() async {
-    try {
-      return await apiService.getPhotos();
-    } catch (e) {
-      throw Exception('Failed to fetch photos: $e');
-    }
+  Future<List<PhotoEntity>> fetchPhotos() async {
+    return await albumDataSrc.getAllPhotos();
   }
 
-  /// Fetches photos only for the selected album
-  Future<List<PhotoModel>> fetchPhotosForAlbum(int albumId) async {
+
+  Future<List<PhotoEntity>> fetchPhotosForAlbum(int albumId) async {
     final allPhotos = await fetchPhotos();
     return allPhotos.where((photo) => photo.albumId == albumId).toList();
   }

@@ -1,4 +1,3 @@
-// Album list screen
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/album_bloc.dart';
@@ -9,8 +8,24 @@ import '../../../../core/widgets/loading_indicator.dart';
 import '../../../../core/widgets/error_widget.dart' as core_error;
 import 'package:go_router/go_router.dart';
 
-class AlbumListScreen extends StatelessWidget {
+class AlbumListScreen extends StatefulWidget {
   const AlbumListScreen({super.key});
+
+  @override
+  State<AlbumListScreen> createState() => _AlbumListScreenState();
+}
+
+class _AlbumListScreenState extends State<AlbumListScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // This gets called when coming back from AlbumDetailScreen
+    final route = ModalRoute.of(context);
+    if (route != null && route.isCurrent) {
+      context.read<AlbumBloc>().add(LoadAlbumsEvent());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,3 +66,4 @@ class AlbumListScreen extends StatelessWidget {
     );
   }
 }
+
