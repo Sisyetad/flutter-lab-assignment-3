@@ -22,7 +22,9 @@ class AlbumDataSrc {
   Future<List<PhotoEntity>> getAllPhotos() async {
     try {
       final res = await dio.get('/photos');
-      return (res.data as List).map((json) => PhotoModel.fromJson(json)).toList();
+      return (res.data as List)
+          .map((json) => PhotoModel.fromJson(json))
+          .toList();
     } catch (e) {
       throw Exception('Failed to fetch photos: $e');
     }

@@ -7,6 +7,4 @@ class AlbumUsecase {
   AlbumUsecase(this.repository);
 
   Future<List<AlbumEntity>> call() => repository.fetchAlbums();
-
-  Future<List<PhotoEntity>> get(int id) => repository.fetchPhotosForAlbum(id);
 }

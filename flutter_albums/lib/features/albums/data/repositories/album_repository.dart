@@ -14,10 +14,4 @@ class AlbumRepository {
   Future<List<PhotoEntity>> fetchPhotos() async {
     return await albumDataSrc.getAllPhotos();
   }
-
-
-  Future<List<PhotoEntity>> fetchPhotosForAlbum(int albumId) async {
-    final allPhotos = await fetchPhotos();
-    return allPhotos.where((photo) => photo.albumId == albumId).toList();
-  }
 }
